@@ -1,0 +1,9 @@
+
+Tablet Pro,700,00,Electronics,12,13.01.2024 10:05:00
+Refrigerator XL,1200,00,Appliances,5,14.01.2024 17:30:00
+Microwave Oven,100,00,Appliances,25,15.01.2024 13:45:00
+Office Desk,150,00,Furniture,20,16.01.2024 9:10:00
+Tennis Racket,120,00,Sports,40,17.01.2024 15:55:00
+Air Purifier,250,00,Appliances,18,18.01.2024 20:30:00
+Backpack Pro,80,00,Accessories,60,19.01.2024 11:45:00
+E-book Reader,150,00,Electronics,30,20.01.2024 14:15:00

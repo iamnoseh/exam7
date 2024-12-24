@@ -1,10 +1,8 @@
-namespace Infrastructure;
-
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Dappercontext;
-using Domain;
 using Dapper;
+using Domain;
+using Infrastructure.ApiResponse.cs;
+using Infrastructure.DataConext;
+namespace Infrastructure.Service.ProductService;
 
 public class ProductService(DapperContext context) : IProductService
 {
@@ -20,22 +18,46 @@ public class ProductService(DapperContext context) : IProductService
 
     public async Task<Response<bool>> ExportProduct()
     {
-        string path = "C:\\Users\\NOSEH\\Desktop\\exam\\Infrastructure\\export.txt";
-        string cmd = "Select * from products";
-        using var _context = context.Connection();
+        const string path = "C:\\Users\\NOSEH\\Desktop\\exam\\Infrastructure\\export.txt";
+        const string cmd = "Select * from products";
+        await using var _context = context.Connection();
         var products = await _context.QueryAsync<Product>(cmd);
         foreach (var p in products)
         {
-            string txt = $"{p.Id},{p.Name},{p.Price},{p.CategoryName},{p.StockQuantity},{p.CreatedDate}";
+            string txt = $"\n{p.Id},{p.Name},{p.Price},{p.CategoryName},{p.StockQuantity},{p.CreatedDate}";
             
             await File.AppendAllTextAsync(path,txt);
         }
         return new Response<bool>(true);
     }
 
-    public Task<Response<bool>> ImportProduct(Product product)
+    public async Task<Response<bool>> ImportProduct()
     {
-        throw new NotImplementedException();
+        string path = "C:\\Users\\NOSEH\\Desktop\\exam\\Infrastructure\\import.txt";
+        string cmd = "Select * from products";
+        using var _context = context.Connection();
+        var lines = File.ReadLines(path);
+        int cnt = 0;
+        var product = new Product();
+        foreach (var line in lines)
+        {
+            var lineSplit =  line.Split(",");
+            product.CategoryName = lineSplit[0];
+            product.CreatedDate = DateTime.Parse(lineSplit[1]);
+            product.Description = lineSplit[2];
+            product.Name = lineSplit[3];
+            product.Price = decimal.Parse(lineSplit[4]);
+            product.StockQuantity = int.Parse(lineSplit[5]);
+
+        }
+        var res =  await AddProduct(product);
+           if (res.StatusCode ==200)
+           {
+               return new Response<bool>(System.Net.HttpStatusCode.InternalServerError,"Internal server error");
+           }
+
+           return new  Response<bool>(true);
+        
     }
 
     public Task<Response<bool>> UpdateFromFile()

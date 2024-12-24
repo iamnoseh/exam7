@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Infrastructure;
+namespace Infrastructure.ApiResponse.cs;
 
 public class Response<T>
 {

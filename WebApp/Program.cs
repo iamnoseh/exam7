@@ -1,5 +1,6 @@
-using Dappercontext;
 using Infrastructure;
+using Infrastructure.DataConext;
+using Infrastructure.Service.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
